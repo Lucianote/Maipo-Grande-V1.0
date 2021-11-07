@@ -32,26 +32,39 @@
     session_start();
     $email=$_REQUEST['email']??'';
     $pasword=$_REQUEST['pass']??'';
+    $tipo=$_REQUEST['tipo']??'';
     $pasword=md5($pasword);
     include_once "db_maipogrande.php";
     $con=mysqli_connect($host,$user,$pass,$db);
-    $query="SELECT id,email,nombre FROM usuarios where email ='".$email."' and pass='".$pasword."';  ";
+    $query="SELECT id,email,nombre,tipo FROM usuarios where email ='".$email."' and pass='".$pasword."';  ";
     $res=mysqli_query($con,$query);
     $row=mysqli_fetch_assoc($res);
-    if ($row) {
+    if ($row['tipo']=='productor') {
       $_SESSION['id'] =$row['id'];
       $_SESSION['email'] =$row['email'];
       $_SESSION['nombre'] =$row['nombre'];
       header("location: panel.php");
-    }
-    else {
+    }else
+    if ($row['tipo']=='transportist') {
+      $_SESSION['id'] =$row['id'];
+      $_SESSION['email'] =$row['email'];
+      header("location: panelTransportista.php");
+      $_SESSION['nombre'] =$row['nombre'];
+    }else
+    if ($row['tipo']=='cliente') {
+      $_SESSION['id'] =$row['id'];
+      $_SESSION['email'] =$row['email'];
+      $_SESSION['nombre'] =$row['nombre'];
+      header("location: ../index.php");
+    }else{
 ?>
   <div class="alert alert-danger" role="alert">
     Error de login credenciales incorrectas
   </div>
 <?php
     }
-  }
+    }
+
  ?>
 
       <form method="post">
@@ -76,6 +89,7 @@
           <div class="col-4">
             <button type="submit" class="btn btn-primary btn-block" name="login">Sign In</button>
           </div>
+           <p>¿No tienes una cuenta? <a href="register.php">Regístrate ahora</a>.</p>
           <!-- /.col -->
         </div>
       </form>
