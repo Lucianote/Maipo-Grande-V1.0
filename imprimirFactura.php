@@ -82,7 +82,7 @@ $imagenBase64 = "data:image/png;base64," . base64_encode(file_get_contents($nomb
     INNER JOIN detalle_venta AS dv ON dv.idDetalleVenta = v.idVenta
     INNER JOIN productos AS p ON p.id = dv.idProducto
     WHERE
-    v.idVenta = '25'";
+    dv.idDetalleVenta = '64'";
     $resDetalle=mysqli_query($con,$queryDetalle);
     $total=0;
     while($row=mysqli_fetch_assoc($resDetalle)){

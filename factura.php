@@ -31,6 +31,13 @@
       (idProducto, idVenta,cantidad_vendia,precio,total) VALUES
       $insertaDetalle;";
       $resDetalle=mysqli_query($con,$queryDetalle);
+
+      $queryActualizarStock = "UPDATE productos INNER JOIN detalle_venta ON productos.id=detalle_venta.idProducto
+      SET productos.existencia = productos.existencia - detalle_venta.cantidad_vendia
+      WHERE idVenta =$id;";
+      $resStock=mysqli_query($con,$queryActualizarStock);
+
+
       if ($resVenta && $resDetalle) {
         ?>
         <div class="container mt-3">
@@ -145,7 +152,7 @@ ventas AS v
 INNER JOIN detalle_venta AS dv ON dv.idDetalleVenta = v.idVenta
 INNER JOIN productos AS p ON p.id = dv.idProducto
 WHERE
-v.idVenta = '25'";
+dv.idDetalleVenta ='64'";
 $resDetalle=mysqli_query($con,$queryDetalle);
 $total=0;
 while($row=mysqli_fetch_assoc($resDetalle)){
